@@ -1,18 +1,16 @@
 // SPDX-License-Identifier: MIT
-module PatientAppointmentManagement
-
-type Patient = { id: String, name: String }
-type Doctor = { id: String, name: String }
-type Appointment = { patientId: String, doctorId: String, timestamp: Int, status: String }
-type TreatmentRecord = { appointmentId: String, treatmentDetails: String, diagnosis: String, procedures: String }
+type Patient = { id: ByteArray, name: ByteArray }
+type Doctor = { id: ByteArray, name: ByteArray }
+type Appointment = { patientId: ByteArray, doctorId: ByteArray, timestamp: Int, status: ByteArray }
+type TreatmentRecord = { appointmentId: ByteArray, treatmentDetails: ByteArray, diagnosis: ByteArray, procedures: ByteArray }
 
 // Store the state of the contract
-state Appointments: Map String Appointment
-state TreatmentRecords: Map String TreatmentRecord
-
+state Appointments: Map ByteArray Appointment
+state TreatmentRecords: Map ByteArray TreatmentRecord
+`
 // Step 1: Request Appointment
-function request_appointment(patientId: String, doctorId: String, timestamp: Int) {
-    let appointmentId = patientId + "-" + doctorId + "-" + timestamp.toString()
+function request_appointment(patientId: ByteArray, doctorId: ByteArray, timestamp: Int) {
+    let appointmentId = patientId + "-" + doctorId + "-" + timestamp.toByteArray()
     let appointment = Appointment { patientId = patientId, doctorId = doctorId, timestamp = timestamp, status = "Requested" }
     
     // Save the appointment to the state
@@ -20,7 +18,7 @@ function request_appointment(patientId: String, doctorId: String, timestamp: Int
 }
 
 // Step 2: Accept Appointment
-function accept_appointment(appointmentId: String) {
+function accept_appointment(appointmentId: ByteArray) {
     match Appointments[appointmentId] {
         Some(appointment) =>
             // Change the status to accepted
@@ -31,7 +29,7 @@ function accept_appointment(appointmentId: String) {
 }
 
 // Step 3: Create a Treatment Record
-function create_treatment_record(appointmentId: String, treatmentDetails: String, diagnosis: String, procedures: String) {
+function create_treatment_record(appointmentId: ByteArray, treatmentDetails: ByteArray, diagnosis: ByteArray, procedures: ByteArray) {
     match Appointments[appointmentId] {
         Some(appointment) if appointment.status == "Accepted" =>
             let treatmentRecord = TreatmentRecord { appointmentId = appointmentId, treatmentDetails = treatmentDetails, diagnosis = diagnosis, procedures = procedures }
@@ -41,7 +39,7 @@ function create_treatment_record(appointmentId: String, treatmentDetails: String
 }
 
 // Step 4: Upload to IPFS
-function upload_to_ipfs(appointmentId: String) {
+function upload_to_ipfs(appointmentId: ByteArray) {
     match TreatmentRecords[appointmentId] {
         Some(record) =>
             // Code to upload record to IPFS (this is a placeholder)
@@ -52,7 +50,7 @@ function upload_to_ipfs(appointmentId: String) {
 }
 
 // Step 5: Upload to Cardano Node
-function upload_to_cardano(appointmentId: String) {
+function upload_to_cardano(appointmentId: ByteArray) {
     match TreatmentRecords[appointmentId] {
         Some(record) =>
             // Code to upload record to Cardano (this is a placeholder)
@@ -63,7 +61,7 @@ function upload_to_cardano(appointmentId: String) {
 }
 
 // Step 6: View Treatment Information
-function view_treatment_info(appointmentId: String) -> Option TreatmentRecord {
+function view_treatment_info(appointmentId: ByteArray) -> Option TreatmentRecord {
     return TreatmentRecords[appointmentId]
 }
 
