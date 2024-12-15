@@ -1,65 +1,58 @@
-# hello-world
+# create-svelte
 
-Write validators in the `validators` folder, and supporting functions in the `lib` folder using `.ak` as a file extension.
+Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
-```aiken
-validator my_first_validator {
-  spend(_datum: Option<Data>, _redeemer: Data, _output_reference: Data, _context: Data) {
-    True
-  }
-}
+Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
+
+## Creating a project
+
+If you're seeing this, you've probably already done this step. Congrats!
+
+```bash
+# create a new project in the current directory
+npx sv create
+
+# create a new project in my-app
+npx sv create my-app
 ```
+
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
+```bash
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
+
+Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
 
 ## Building
 
-```sh
-aiken build
+To build your library:
+
+```bash
+npm run package
 ```
 
-## Configuring
+To create a production version of your showcase app:
 
-**aiken.toml**
-```toml
-[config.default]
-network_id = 41
+```bash
+npm run build
 ```
 
-Or, alternatively, write conditional environment modules under `env`.
+You can preview the production build with `npm run preview`.
 
-## Testing
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 
-You can write tests in any module using the `test` keyword. For example:
+## Publishing
 
-```aiken
-use config
+Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
 
-test foo() {
-  config.network_id + 1 == 42
-}
+To publish your library to [npm](https://www.npmjs.com):
+
+```bash
+npm publish
 ```
-
-To run all tests, simply do:
-
-```sh
-aiken check
-```
-
-To run only tests matching the string `foo`, do:
-
-```sh
-aiken check -m foo
-```
-
-## Documentation
-
-If you're writing a library, you might want to generate an HTML documentation for it.
-
-Use:
-
-```sh
-aiken docs
-```
-
-## Resources
-
-Find more on the [Aiken's user manual](https://aiken-lang.org).
